@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAM6PKF1d3L79ywXtCsMMu5BZoO9ZujDFM&sensor=false&libraries=places">
+    </script>
+    <script type="text/javascript">
+        function inicializar() {
+            var posicionInicial = new google.maps.LatLng(16.833, -99.862);
+            var opcionesMapa = {
+                center: posicionInicial,
+                zoom: 8,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var mapa = new google.maps.Map(document.getElementById("map_canvas"), opcionesMapa);
+            var marcador = new google.maps.Marker({
+                position: posicionInicial,
+                map: mapa,
+                title: 'Acapulco'
+            });
+        }
+    </script>
+  </head>
+  <body onload="inicializar()">
+     <input id="busquedaAutcomplte" class="controls" type="text" pĺaceholder="Escribe lugas a buscar">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>

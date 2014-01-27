@@ -7,6 +7,7 @@
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
       .textoInfoWindow{height: 400px; width: 400px}
+      
     </style>
     <script type="text/javascript"
       src="http://maps.google.com/maps/api/js?sensor=false">
@@ -42,16 +43,6 @@ function inicializar() {
          ciudad.infoWindow.open(mapa, ciudad.marcador);
       });
    });
- //  google.maps.event.addListener(ciudades[0].marcador, 'click', function() {
- //     ciudades[0].infoWindow.open(mapa,ciudades[0].marcador);
- //  });
-/*
-      ciudad.forEach(function(ciudad, indice, arreglo){
-      google.maps.event.addListener(ciudad.marcador, 'click', function(e){
-         infoWindow.open(map, this)
-      })
-   })
- */
 }
     </script>
   </head>

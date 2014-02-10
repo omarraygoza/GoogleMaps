@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+      .textoInfoWindow{height: 50px; width: 200px}
+      
+    </style>
+    <script type="text/javascript"
+      src="http://maps.google.com/maps/api/js?sensor=false">
+    </script>
+    <script type="text/javascript">
+
+var ciudades = [
+   {"nombre": "Acapulco",        "lat": 16.833, "lon": -99.862},
+   {"nombre": "Chilpancingo",    "lat": 17.549, "lon": -99.499},
+   {"nombre": "Iguala",          "lat": 18.348, "lon": -99.522},
+   {"nombre": "Zihuatanejo",     "lat": 17.657, "lon": -101.533},
+   {"nombre": "Taxco",           "lat": 18.557, "lon": -99.608}
+];
+
+function inicializar() {
+   var arrayPosiciones = [];
+   var posicionInicial = new google.maps.LatLng(16.833, -99.862);
+   var opcionesMapa = {
+      center: posicionInicial,
+      zoom: 8,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+   };
+   var mapa = new google.maps.Map(document.getElementById("map_canvas"), opcionesMapa);
+   ciudades.forEach(function(ciudad, indice, arreglo){
+      ciudad.marcador = new google.maps.Marker({
+         position: new google.maps.LatLng(ciudad.lat, ciudad.lon),
+         map: mapa,
+         title: ciudad.nombre
+      }) ;
+      ciudad.infoWindow = new google.maps.InfoWindow({
+         content : "<div class='textoInfoWindow'><H1>Ciudad: <B>"+ciudad.nombre+"</B></H1></div>"
+      });
+      google.maps.event.addListener(ciudad.marcador, 'click', function(evento){
+//         var contenido = "<div class='textoInfoWindow'>"+evento.latLng+"</div>"
+         var contenido = "Hola";
+         var posicionGeo = new google.maps.Geocoder();
+         posicionGeo.geocode({location:evento.latLng}, function(resultado, status){
+            if(status == google.maps.GeocoderStatus.OK){
+               contenido = "<div class='textoInfoWindow'>"+resultado[0].address_components[0].short_name+"</div>";
+               ciudad.infoWindow.setContent(contenido);
+            } else
+               alert("NO funciona")
+         });
+//         ciudad.infoWindow.setContent(contenido);
+         ciudad.infoWindow.open(mapa, ciudad.marcador);
+      });
+      arrayPosiciones.push(new google.maps.LatLng(ciudad.lat, ciudad.lon));
+   });
+   var trazado = new google.maps.Polyline({
+      path: arrayPosiciones,
+      strokeColor: "#0000FF",
+      strokeOpacity: 1.0,
+      strokeWeight: 1
+   });
+   poligono.setMap(mapa);
+
+}
+    </script>
+  </head>
+  <body onload="inicializar()">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>

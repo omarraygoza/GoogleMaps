@@ -6,6 +6,7 @@
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
+      .textoInfoWindow{height: 50px; width: 200px}
     </style>
     <script type="text/javascript"
       src="http://maps.google.com/maps/api/js?sensor=false">
@@ -15,10 +16,11 @@
             var posicionInicial = new google.maps.LatLng(16.833, -99.862);
             var opcionesMapa = {
                 center: posicionInicial,
-                zoom: 8,
+                zoom: 10,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var mapa = new google.maps.Map(document.getElementById("map_canvas"), opcionesMapa);
+            var nuevoInfoWindow = null;
             var marcador = new google.maps.Marker({
                 position: posicionInicial,
                 map: mapa,
@@ -30,6 +32,28 @@
                   position: evento.latLng,
                   map: mapa,
                   draggable: true
+               });
+               if (nuevoInfoWindow){
+                  nuevoInfoWindow.close();
+               }
+               nuevoInfoWindow = new google.maps.InfoWindow();
+               google.maps.event.addListener(nuevoMarcador, 'click', function(e){
+                  var nuevaPosicion = new google.maps.Geocoder();
+                  var contenido = "OKIDOKY";
+                  nuevaPosicion.geocode({'latLng':e.latLng}, function(result, status){
+                     if(status == google.maps.GeocoderStatus.OK){
+                        if(result[1]){
+                           map.setZoom(13);
+                           
+                        }
+                        contenido = result[1].formatted_address;
+ //                       nuevoInfoWindow = new google.maps.InfoWindow();
+                        nuevoInfoWindow.setContent("<div class='textoInfoWindow'>"+contenido+"</div>");
+                     } else
+                        alert("NO funciona")
+                  });
+//                  nuevoInfoWindow.setContent(contenido);
+                  nuevoInfoWindow.open(mapa, nuevoMarcador);
                });
             });
         }
